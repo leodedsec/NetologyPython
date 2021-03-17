@@ -1,4 +1,21 @@
 class Student:
+    def __str__(self):
+        self.globalGrades=[]
+        #т.к оценки хранятся в виде ключ-[оценки], т.е нужно вытащить оценки, чтобы работать с ними
+        def replaceGrades():
+            for i in self.grades.values():
+                for j in i:
+                   self.globalGrades.append(j)
+        replaceGrades()
+        return f"Имя: {self.name}\nФамилия: {self.surname}\n\
+Средняя оценка за домашние задания: {sum(self.globalGrades)/len(self.globalGrades)}\n\
+Курсы в процессе изучения: {self.courses_in_progress}\n\
+Завершенные курсы: {self.finished_courses}"
+    def __lt__(self, other):
+        if sum(self.globalGrades)/len(self.globalGrades)<sum(other.globalGrades)/len(other.globalGrades):
+            print("<")
+        else:
+            print(">")
     def __init__(self, name, surname, gender):
         self.name = name
         self.surname = surname
@@ -6,10 +23,6 @@ class Student:
         self.finished_courses = [] #Полностью решенные и проверенные учителем курсы
         self.courses_in_progress = [] #Курсы на проверку
         self.grades = {} #Оценки
-    def __str__(self):
-        return "Имя: "+self.name+"\n"+"Фамилия: "+self.surname+"\n"+\
-        "Средняя оценка за домашние задания: "+str(sum(self.grades.values())/len(self.grades))+"\n"+\
-        "Завершенные курсы: "+self.finished_courses
     #поставить оценку лектору
     def gradeLecturer(self,lector):
         rangeGrades=[int(i) for i in range(11)] #оценки 0-10
@@ -26,6 +39,7 @@ class Student:
                 print("Наборы курсов у преподавателя/ученика разнятся!")
         else:
             print("Такого лектора не сущесвует в нашем вузе!")
+
 
 
 
@@ -64,102 +78,36 @@ class Lecturer(Mentor):
 
 
 
-lector1=Lecturer("Oleg","Nazarov") #создали лектора
-lector1.addCourses() #добавили ему курс
-
-print()
+##lector1=Lecturer("O","N") #создали лектора
+##lector1.addCourses() #добавили ему курс
+##
+##print()
 
 pupil1=Student("Azat","Abdrashitov","M") #создали студента
 pupil1.courses_in_progress.append("GIT") #добавили курс студенту
-pupil1.finished_courses.append("Python") # добавили завершенный курс
-pupil1.gradeLecturer(lector1) #оценка 1
-pupil1.gradeLecturer(lector1) #оценка 2
+pupil1.courses_in_progress.append("Python") #добавили курс студенту
+pupil1.finished_courses.append("English") # добавили завершенный курс
+##pupil1.gradeLecturer(lector1) #оценка 1
+##pupil1.gradeLecturer(lector1) #оценка 2
 
+pupil2=Student("Leo","Messi","M")
+pupil2.courses_in_progress.append("GIT") #добавили курс студенту
+pupil2.courses_in_progress.append("Python") #добавили курс студенту
+pupil2.finished_courses.append("None") # добавили завершенный курс
 print()
+
 
 homework1=Reviewers("Boris","Trushin")
 homework1.courses_attached.append("GIT")
-homework1.rate_hw(pupil1,"GIT",8)
+homework1.courses_attached.append("Python")
+homework1.rate_hw(pupil1,"GIT",7)
+homework1.rate_hw(pupil1,"Python",3)
+homework1.rate_hw(pupil1,"Python",2)
 
+homework1.rate_hw(pupil2,"GIT",3)
 
-print(lector1) #Инфа о лекторе
-print(homework1)
+##print(lector1) #Инфа о лекторе
+##print(homework1)
 print(pupil1)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-##def main():
-##    getChoice=None
-##    while getChoice!="q":
-##        print("""
-##            s - add student
-##            l - add lecturer
-##            aG - student gives a grade to the lecturer
-##            aCS - add course to the student
-##            aCL - add course to the lecturer
-##            look - print()
-##            """)
-##        getChoice=input("Выбор:")
-##        if getChoice=="s":
-##            name=input("Имя студента:")
-##            surname=input("Фамилия студента:")
-##            gender=input("Гендер студента:")
-##            pupil=Student(name,surname,gender)
-##        elif getChoice=="l":
-##            name=input("Имя лектора:")
-##            surname=input("Фамилия лектора:")
-##            teacher=Lecturer(name,surname)
-##        elif getChoice=="aCS":
-##            course=input("Добавить курс:")
-##            pupil.courses_in_progress.append(course)
-##        elif getChoice=="aCL":
-##            course=teacher.addCourses()
-##            teacher.courses_attached.append(course)
-##        elif getChoice=="aG":
-##            getLecurer=list(map(str, input("Имя/Фамилия лектора:").split()))
-##            if getLecurer[0]==teacher.name and getLecurer[1]==teacher.surname:
-##                pupil.gradeLecturer(teacher)
-##            else:
-##                print("Такого лектора не сущесвует!")
-##        elif getChoice=="look":
-##            print(pupil.name,pupil.surname)
-##            print(teacher.name,teacher.surname)
-##            print(teacher.grade_lecturer)
-##
-##main()
-####teacher1=Lecturer("Oleg","Nazarov")
-####a=teacher1.addCourses()
-####teacher1.courses_attached.append(a)
-####
-####pupil1=Student("Azat","Abdrashitov","M")
-####b=input("Введите название курса:")
-####pupil1.courses_in_progress.append(b)
-####pupil1.gradeLecturer(teacher1)
-####print(teacher1.grade_lecturer)
+print(pupil2)
+print(pupil1<pupil2)
