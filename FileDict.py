@@ -1,0 +1,22 @@
+
+with open("recipes.txt", encoding="utf8") as file:
+    cook_book={}
+    file=file.readlines() #общий список со всеми рецептами из txt
+    oneList=[] #список с одним рецептом
+    for i in file:
+        oneList.append(i)
+        if i=="\n": #обозначаем конец блюда
+            ingrDict={}
+            key=oneList[0].strip("\n")
+            cook_book[key]=[]
+            for ingr in oneList[2:-1]: #пробегаемся по ингридиентам
+                ingr=ingr.split("|")
+                ingrDict["ingredient_name"]=ingr[0].strip(" ")
+                ingrDict["quantity"]=int(ingr[1])
+                ingrDict["measure"]=ingr[2].strip("\n ")
+                cook_book[key]+=[ingrDict]
+                ingrDict={}
+            oneList.clear() #очищаем список, чтобы работать со след.рецептом
+
+for i,j in cook_book.items():
+    print(i,j)
